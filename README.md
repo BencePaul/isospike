@@ -44,11 +44,11 @@ An easy way to get started is to look at the *Pt_DS* example. IsoSpike itself is
 It takes four inputs, described below, and returns an array of results (here called IsoSpike_results).
 
 The inputs for IsoSpike are the three raw ratios (calculated in DRS from Iolite data), and DSsettings, which is a numpy array containing the double-spike parameters. From the Pd_DS example DRS, the parameters are declared as follows:
-  `rationames=['Pt195/Pt194','Pt196/Pt194','Pt198/Pt194']  ## This is used to generate channel names later in the DRS
-	unmixedRatios=[1.0303605,0.7717145,0.2232910]
-	spikeRatios=[1.838948,19.31747,38.37810]
-	logMassRatios=[0.005153188,0.010270037,0.020439027]
-	DSsettings=np.array([unmixedRatios,spikeRatios,logMassRatios])`
+  `rationames=['Pt195/Pt194','Pt196/Pt194','Pt198/Pt194']  ## This is used to generate channel names later in the DRS`
+  `unmixedRatios=[1.0303605,0.7717145,0.2232910]`
+  `spikeRatios=[1.838948,19.31747,38.37810]`
+  `logMassRatios=[0.005153188,0.010270037,0.020439027]`
+  `DSsettings=np.array([unmixedRatios,spikeRatios,logMassRatios])`
 
 The `IsoSpike_results` array can then be referenced in the DRS and used in Iolite in the same way as any channel, and viewed in the Time Series or Results windows.
 
