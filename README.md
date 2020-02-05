@@ -15,7 +15,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ### What is IsoSpike
-IsoSpike is free open-source software for double-spike data reduction. It was built as an addon for Iolite. With the release of Iolite4, IsoSpike has been re-written in Python. This repo contains a new version that works in Iolite, as well as some standalone code that can do DS correction from the command line, with a single analysis or a set of data files.
+IsoSpike is free open-source software for double-spike data reduction. It was built as an addon for Iolite, and has been re-written in Python for Iolite4. The new Python code also includes some standalone code that can do DS correction from the command line, with a single analysis or a set of data files, which could be incorporated into a homebrew data reduction setup.
 
 ### Credit
 If you use this software in your research, please cite the following paper in your publications:
