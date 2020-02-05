@@ -26,6 +26,7 @@ To use IsoSpike in Iolite4, *IsoSpike_iolite4.py* must be copied to a folder in 
 
 On a Mac, you can copy and paste the following into *Python Site Packages*: 
 `;/Applications/iolite4.app/Contents/Resources/Addons;`
+
 Note: there must be a semicolon between entries.
 
 For convenience, in the IsoSpike_Iolite4 folder, there are two easy options for placing the files on a Mac.
