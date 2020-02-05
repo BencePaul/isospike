@@ -24,7 +24,8 @@ Creech and Paul, 2013, Geostandards and Geoanalytical Research *39*, 7-15. doi:1
 ### Installation and requirements
 To use IsoSpike in Iolite4, *IsoSpike_iolite4.py* must be copied to a folder in the Iolite app folder called Addons —— for now, you will have to create it, but in future versions of Iolite the folder will exist by default. You will also need to add the addons folder to the Python Site Packages in the Paths section of Iolite's preferences. 
 
-On a Mac, you can copy and paste the following into *Python Site Packages*: `;/Applications/iolite4.app/Contents/Resources/Addons;`
+On a Mac, you can copy and paste the following into *Python Site Packages*: 
+`;/Applications/iolite4.app/Contents/Resources/Addons;`
 Note: there must be a semicolon between entries.
 
 For convenience, in the IsoSpike_Iolite4 folder, there are two easy options for placing the files on a Mac.
