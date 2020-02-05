@@ -98,7 +98,7 @@ def runDRS():
 	#######
 	#### Here is where we call IsoSpike, passing on the DS settings and the measured raw ratios.
 	#######
-	result_array=IsoSpike(DSsettings,Raw195_194,Raw196_194,Raw198_194)
+	IsoSpike_results=IsoSpike(DSsettings,Raw195_194,Raw196_194,Raw198_194)
 
 
 	drs.message("Calculating internally normalised values")
@@ -109,15 +109,15 @@ def runDRS():
 	ones=np.ones((len(indexChannel.time()))) ## initialise an array of ones; some data didn't work if I just copy into arrays, but fine when multiplying by array of ones
 
 	#unpack results
-	x=ones*result_array[:,0]
-	y=ones*result_array[:,1]
-	z=ones*result_array[:,2]
-	DScorr_ratio1=ones*result_array[:,3]
-	DScorr_ratio2=ones*result_array[:,4]
-	DScorr_ratio3=ones*result_array[:,5]
-	deltaratio1=ones*result_array[:,6]
-	deltaratio2=ones*result_array[:,7]
-	deltaratio3=ones*result_array[:,8]
+	x=ones*IsoSpike_results[:,0]
+	y=ones*IsoSpike_results[:,1]
+	z=ones*IsoSpike_results[:,2]
+	DScorr_ratio1=ones*IsoSpike_results[:,3]
+	DScorr_ratio2=ones*IsoSpike_results[:,4]
+	DScorr_ratio3=ones*IsoSpike_results[:,5]
+	deltaratio1=ones*IsoSpike_results[:,6]
+	deltaratio2=ones*IsoSpike_results[:,7]
+	deltaratio3=ones*IsoSpike_results[:,8]
 
 	#create time series in Iolite
 	data.createTimeSeries("lambda",data.Output, indexChannel.time(),x)
