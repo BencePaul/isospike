@@ -1,0 +1,19 @@
+IsoSpike is copyright © 2013 John Creech and Bence Paul. The files provided here are copyright © 2013 John Creech.
+
+This folder contains example files for the purpose of demonstrating IsoSpike. These examples include Pt stable isotope data, an Iolite DRS for preparing these data for double-spike deconvolution in IsoSpike, and the IRMM-010 standard file that is used in the demo. These data were collected and files were prepared by John Creech.
+
+
+This zip file contains:
+> IsoSpike_example.pxp: a packed experiment file that contains Pt stable isotope data collected using a Nu Plasma MC-ICPMS
+---- this should end up inside  /Add ons/IsoSpike/IsoSpike_example/. If you unzipped in the suggested folder then it should be right already.
+
+> Beta_Pt_DS.ipf: a minimal version of my DRS for Pt stable isotopes by double spike 
+---- put this in your \Data Reduction Schemes folder
+
+> DS_Settings_29Oct2012_VUW-IRMM_196198DS.txt: one of my DS_settings files that is used in the example
+---- this belongs in the /DS_settings folder inside your IsoSpike folder
+
+> a copy of my IRMM-010 standard file (IRMM-010.txt)
+---- put this in the \Standards folder in your Iolite directory
+
+Then, open the IsoSpike_example.pxp file and you can start trying out IsoSpike. The included DRS does all of the necessary baseline subtraction and calculation of raw ratios, so you can use it as a template to get you started. The necessary integrations have also been pre-defined, so once you open the experiment, all you need to do to see IsoSpike in action is select Beta_Pt_DS from the Data Reduction Schemes drop-down menu.

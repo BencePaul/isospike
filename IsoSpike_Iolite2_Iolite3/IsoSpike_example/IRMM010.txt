@@ -1,0 +1,1 @@
+Standard Name	IRMM010Data source	Creech et al. (2012) J. Anal. At. Spectrom. 28, 853. DOI: 10.1039/c3ja50022eMatrix			Brief description	"IRMM Pt isotope standard"Notes		URL			Parameter	Units	Value	Uncertainty190Pt/194Pt		0.0003930	192Pt/194Pt		0.024194	195Pt/194Pt		1.02985	196Pt/194Pt		0.77086	198Pt/194Pt		0.2276	
