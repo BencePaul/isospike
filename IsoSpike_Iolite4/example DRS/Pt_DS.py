@@ -7,7 +7,8 @@
 #/ Contact: john@isospike.org
 
 
-from iolite import QtGui
+from iolite.QtGui import QComboBox, QWidget, QFormLayout, QSpacerItem, QSizePolicy
+from iolite.QtGui import QCheckBox, QLineEdit
 import numpy as np
 import pandas as pd
 from IsoSpike_iolite4 import IsoSpike
@@ -23,11 +24,11 @@ def runDRS():
 
 	# Get double-spike parameters
 	## In this version, we will just include the DS settings in the DRS
-	rationames=['Pt195/Pt194','Pt196/Pt194','Pt198/Pt194']
-	unmixedRatios=[1.0303605,0.7717145,0.2232910]
-	spikeRatios=[1.838948,19.31747,38.37810]
-	logMassRatios=[0.005153188,0.010270037,0.020439027]
-	DSsettings=np.array([unmixedRatios,spikeRatios,logMassRatios])
+	rationames = ['Pt195/Pt194', 'Pt196/Pt194', 'Pt198/Pt194']
+	unmixedRatios = [1.0303605, 0.7717145, 0.2232910]
+	spikeRatios = [1.838948, 19.31747, 38.37810]
+	logMassRatios = [0.005153188, 0.010270037, 0.020439027]
+	DSsettings = np.array([unmixedRatios, spikeRatios, logMassRatios])
 	
 	# Create debug messages for the settings being used
 	IoLog.debug("indexChannelName = %s" % indexChannel.name)
@@ -150,27 +151,92 @@ def runDRS():
 	
 
 def settingsWidget():
-	widget = QtGui.QWidget()
-	formLayout = QtGui.QFormLayout()
+	widget = QWidget()
+	formLayout = QFormLayout()
 	widget.setLayout(formLayout)
+
+	defaultChannelName = "Pt194"
+	timeSeriesNames = data.timeSeriesNames(data.Input)
+	if ('Pt194' not in timeSeriesNames) and (len(timeSeriesNames) > 1):
+		defaultChannelName = timeSeriesNames[0]
+
+	drs.setSetting("IndexChannel", defaultChannelName)
+	drs.setSetting("ReferenceMaterial", "IRMM010")
+	drs.setSetting("Mask", True)
+	drs.setSetting("MaskChannel", defaultChannelName)
+	drs.setSetting("MaskCutoff", 0.05)
+	drs.setSetting("MaskTrim", 0.0)
 
 	settings = drs.settings()
 
-	defaultChannelName = "Pt194"
-	drs.setSetting("IndexChannel", defaultChannelName)
-
-	indexComboBox = QtGui.QComboBox(widget)
-	indexComboBox.addItems(data.timeSeriesNames(data.Input))
+	indexComboBox = QComboBox(widget)
+	indexComboBox.addItems(timeSeriesNames)
 	indexComboBox.setCurrentText(settings["IndexChannel"])
-	indexComboBox.currentTextChanged.connect(lambda t: drs.setSetting("IndexChannel", t))
+	indexComboBox.textActivated.connect(lambda t: drs.setSetting("IndexChannel", t))
 	formLayout.addRow("Index channel", indexComboBox)
 
-	drs.setSetting("ReferenceMaterial", "IRMM010")
-	rmNames = data.selectionGroupNames(data.ReferenceMaterial)
-	rmComboBox = QtGui.QComboBox(widget)
+	def updateIndexCombo():
+		timeSeriesNames = data.timeSeriesNames(data.Input)
+		indexComboBox.clear()
+		indexComboBox.addItems(timeSeriesNames)
+
+	data.dataChanged.connect(updateIndexCombo)
+
+	rmComboBox = QComboBox(widget)
+	rmNames = data.referenceMaterialNames()
 	rmComboBox.addItems(rmNames)
-	rmComboBox.setCurrentText(settings["ReferenceMaterial"])
-	rmComboBox.currentTextChanged.connect(lambda t: drs.setSetting("ReferenceMaterial", t))
-	formLayout.addRow("Reference material", rmComboBox)    
+	if settings["ReferenceMaterial"] in rmNames:
+		rmComboBox.setCurrentText(settings["ReferenceMaterial"])
+	else:
+		rmComboBox.setCurrentText(rmNames[0])
+		drs.setSetting('ReferenceMaterial', rmNames[0])
+
+	rmComboBox.textActivated.connect(lambda t: drs.setSetting("ReferenceMaterial", t))
+	formLayout.addRow("Reference material", rmComboBox)
+
+	def updateRMCombo():
+		rmNames = data.selectionGroupNames(data.ReferenceMaterial)
+		rmComboBox.clear()
+		rmComboBox.addItems(rmNames)
+		drs.setSetting("ReferenceMaterial", rmComboBox.currentText())
+
+	data.selectionGroupsChanged.connect(updateRMCombo)
+
+	verticalSpacer2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
+	formLayout.addItem(verticalSpacer2)
+
+	# Set up Mask
+	maskCheckBox = QCheckBox(widget)
+	maskCheckBox.setChecked(settings["Mask"])
+	maskCheckBox.toggled.connect(lambda t: drs.setSetting("Mask", bool(t)))
+	formLayout.addRow("Mask", maskCheckBox)
+
+	maskComboBox = QComboBox(widget)
+	maskComboBox.addItems(data.timeSeriesNames(data.Input))
+	maskComboBox.setCurrentText(settings["MaskChannel"])
+	maskComboBox.currentTextChanged.connect(lambda t: drs.setSetting("MaskChannel", t))
+	formLayout.addRow("Mask channel", maskComboBox)
+
+	maskLineEdit = QLineEdit(widget)
+	maskLineEdit.setText(settings["MaskCutoff"])
+	maskLineEdit.textChanged.connect(lambda t: drs.setSetting("MaskCutoff", float(t)))
+	formLayout.addRow("Mask cutoff", maskLineEdit)
+
+	maskTrimLineEdit = QLineEdit(widget)
+	maskTrimLineEdit.setText(settings["MaskTrim"])
+	maskTrimLineEdit.textChanged.connect(lambda t: drs.setSetting("MaskTrim", float(t)))
+	formLayout.addRow("Mask trim", maskTrimLineEdit)
+
+	verticalSpacer3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Minimum)
+	formLayout.addItem(verticalSpacer3)
+
+	# Restore settings
+	try:
+		settings = drs.settings()
+		print('Restoring settings...')
+		print(settings)
+		rmComboBox.setCurrentText(settings["ReferenceMaterial"])
+	except KeyError:
+		pass
 
 	drs.setSettingsWidget(widget)
